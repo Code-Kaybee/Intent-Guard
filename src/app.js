@@ -1,6 +1,7 @@
 import {
   DEFAULT_POLICY,
   createExactApproval,
+  consumeExactApproval,
   evaluateIntent,
   isExactApprovalValid,
 } from "./policy.js";
@@ -59,7 +60,6 @@ function renderScenarios() {
     const button = document.createElement("button");
     button.type = "button";
     button.className = `scenario-button${scenario.id === state.selectedId ? " selected" : ""}`;
-    button.setAttribute("role", "listitem");
     button.setAttribute("aria-pressed", String(scenario.id === state.selectedId));
     button.innerHTML = `<strong>${escapeHtml(scenario.label)}</strong>${escapeHtml(scenario.description)}`;
     button.addEventListener("click", () => selectScenario(scenario.id));
@@ -238,8 +238,16 @@ elements.execute.addEventListener("click", () => {
     showToast("No valid approval for this exact payment.");
     return;
   }
+  if (outcome.decision === "warn") {
+    if (!consumeExactApproval(state.approval, intent)) {
+      showToast("Approval is expired or has already been used.");
+      return;
+    }
+    state.approval = null;
+  }
   addAuditEvent("attempt", outcome);
-  showToast("Simulation passed the gate. No wallet is connected and nothing was signed.");
+  renderDecision();
+  showToast("Simulation passed the gate. One-time approval consumed; nothing was signed.");
 });
 
 document.querySelector("#run-demo").addEventListener("click", () => {

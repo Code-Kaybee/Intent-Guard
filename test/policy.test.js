@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   createExactApproval,
+  consumeExactApproval,
   evaluateIntent,
   isExactApprovalValid,
 } from "../src/policy.js";
@@ -31,6 +32,14 @@ test("exact approval does not carry over to a changed recipient or amount", () =
   assert.equal(isExactApprovalValid(approval, original, { now: 2_000 }), true);
   assert.equal(isExactApprovalValid(approval, { ...original, receiver: "other.testnet" }, { now: 2_000 }), false);
   assert.equal(isExactApprovalValid(approval, { ...original, amount: 0.09 }, { now: 2_000 }), false);
+});
+
+test("exact approval can only be consumed once", () => {
+  const original = scenario("new-recipient");
+  const approval = createExactApproval(original, { now: 1_000, ttlMs: 60_000 });
+  assert.equal(consumeExactApproval(approval, original, { now: 2_000 }), true);
+  assert.equal(isExactApprovalValid(approval, original, { now: 2_000 }), false);
+  assert.equal(consumeExactApproval(approval, original, { now: 2_000 }), false);
 });
 
 test("exact approval expires and cannot authorize mainnet", () => {

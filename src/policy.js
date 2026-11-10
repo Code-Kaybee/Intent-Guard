@@ -92,15 +92,23 @@ export function createExactApproval(intent, { now = Date.now(), ttlMs = 60_000 }
   return {
     canonicalIntent: canonicalIntent(intent),
     expiresAt: now + ttlMs,
+    used: false,
   };
 }
 
 export function isExactApprovalValid(approval, intent, { now = Date.now() } = {}) {
   return Boolean(
     approval &&
+    !approval.used &&
     now < approval.expiresAt &&
     approval.canonicalIntent === canonicalIntent(intent)
   );
+}
+
+export function consumeExactApproval(approval, intent, { now = Date.now() } = {}) {
+  if (!isExactApprovalValid(approval, intent, { now })) return false;
+  approval.used = true;
+  return true;
 }
 
 function result(decision, reasons, rules) {
