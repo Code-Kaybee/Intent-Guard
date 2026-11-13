@@ -3,3 +3,9 @@
 node_modules/
 __pycache__/
 .DS_Store
+target/
+artifacts/
+.sandbox/
+dist/
+test-results/
+playwright-report/

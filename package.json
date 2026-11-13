@@ -1,10 +1,40 @@
 {
   "name": "intentguard",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20.15.0"
+  },
   "scripts": {
-    "test": "node --test",
-    "start": "python3 -m http.server 4173"
+    "test": "node --test test/*.test.js",
+    "build:contract": "node scripts/build-contract.mjs",
+    "test:integration": "node --test --test-concurrency=1 integration/*.test.js",
+    "benchmark": "node scripts/benchmark.mjs",
+    "prepare:testnet": "node scripts/prepare-testnet.mjs",
+    "deploy:testnet": "node scripts/deploy-testnet.mjs",
+    "demo:testnet": "node scripts/demo-testnet.mjs",
+    "verify:testnet": "node scripts/verify-testnet.mjs",
+    "start": "node server/index.mjs",
+    "build:web": "node scripts/build-web.mjs",
+    "export:evidence": "node scripts/export-evidence.mjs",
+    "preview": "node server/preview.mjs",
+    "test:web": "playwright test"
+  },
+  "dependencies": {
+    "near-api-js": "5.1.0",
+    "near-workspaces": "5.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "binaryen": "132.0.0"
+  },
+  "overrides": {
+    "tar": "7.5.23"
+  },
+  "allowScripts": {
+    "near-workspaces@5.0.0": true,
+    "near-sandbox@0.1.5": true,
+    "secp256k1@5.0.1": false
   }
 }
