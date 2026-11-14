@@ -1,6 +1,7 @@
 import { ATTACK_CASES } from "./attack-cases.js";
 import { formatNear } from "./amount.js";
 import { createLiveRuntime, requestJson } from "./api.js";
+import { initializeWorkspace } from "./workspace.js";
 
 const recorded = document.documentElement.dataset.runtime === "recorded";
 const state = {
@@ -71,15 +72,6 @@ function selectScenario(id, key = null) {
   if (state.connection === "ready") state.error = null;
   render();
 }
-function setTheme(theme) {
-  const isLight = theme === "light";
-  document.documentElement.dataset.theme = isLight ? "light" : "dark";
-  try { localStorage.setItem("intentguard-theme", isLight ? "light" : "dark"); } catch {}
-  document.getElementById("theme-icon").setAttribute("href", isLight ? "#i-moon" : "#i-sun");
-  document.getElementById("theme-toggle").setAttribute("aria-label", `Switch to ${isLight ? "dark" : "light"} theme`);
-  document.querySelector('meta[name="theme-color"]').content = isLight ? "#f3f6f0" : "#101411";
-}
-
 function renderScenarios() {
   const query = state.query.trim().toLocaleLowerCase();
   const scenarios = state.scenarios.filter((scenario) => (state.filter === "all" || scenario.layer === state.filter)
@@ -559,8 +551,7 @@ for (const link of document.querySelectorAll(".workspace-nav a")) {
     link.classList.add("active"); link.setAttribute("aria-current", "location");
   });
 }
-document.getElementById("theme-toggle").addEventListener("click", () => setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light"));
 window.addEventListener("online", () => { if (state.connection === "error" && !state.busy) connect(); });
 window.addEventListener("pagehide", () => { clearTimeout(state.pollTimer); clearTimeout(state.toastTimer); });
-setTheme(document.documentElement.dataset.theme);
+initializeWorkspace();
 connect();

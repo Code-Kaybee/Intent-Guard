@@ -17,13 +17,39 @@ Label the local console as **NEAR Sandbox**. Show public testnet separately. The
 ## X post draft
 
 ```text
-AI agents need payment boundaries.
-I built IntentGuard at NEAR HACKATHON: exact invoice approvals enforced by NEAR. Watch an attack get blocked and an approved vendor get paid.
+AI agents need spending limits.
+
+I built IntentGuard at NEAR HACKATHON: exact invoice approvals enforced by NEAR.
+
+Redirect blocked. Vendor paid. Recorded Sandbox demo.
+
 @NEARProtocol #NEARHackathon
+https://code-kaybee.github.io/Intent-Guard/
 https://github.com/Code-Kaybee/Intent-Guard
 ```
 
 Attach the demo video. Local-only projects need a video under Q-012; screenshots alone do not meet that exception. The human publishes the post and uses its public URL in the submission.
+
+## Record an upload-ready demo
+
+Requires the web build, Playwright Chromium (`npx playwright install chromium --only-shell`), and FFmpeg with an H.264 encoder.
+
+```sh
+npm run build:web
+npm run record:demo -- --ffmpeg /path/to/ffmpeg
+```
+
+The script opens the actual public-console build and records the control payment, blocked recipient substitution, protocol-level direct-transfer refusal, approved payment, receipt logs, and complete case list. Captions explicitly identify recorded NEAR Sandbox evidence; it sends no chain transaction. It writes `artifacts/submission/intentguard-demo.mp4`, a WebM original, and `intentguard-demo-cover.png`. Generated media stays outside Git.
+
+The recording is captioned and silent. Preview it before uploading; add a spoken explanation if desired. To record the deployed version, add `--url https://code-kaybee.github.io/Intent-Guard/` after deployment completes.
+
+Upload the MP4 through your X account, use the post text above, and retain the public post URL. A website URL alone is not the required demo-post URL.
+
+## Repository About description
+
+```text
+A spending firewall for AI payment agents. NEAR enforces exact invoice approvals and restricted keys to block unauthorized payments.
+```
 
 ## Project description draft
 

@@ -96,7 +96,7 @@ test("theme preference persists and restricted storage does not break startup", 
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await openDemo(page);
-  await page.getByRole("button", { name: "Switch to light theme" }).click();
+  await page.getByRole("combobox", { name: "Appearance" }).selectOption("light");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
@@ -107,9 +107,75 @@ test("theme preference persists and restricted storage does not break startup", 
   });
   await page.reload();
   await expect(page.locator("#execute-button")).toBeEnabled();
-  await page.getByRole("button", { name: "Switch to light theme" }).click();
+  await page.getByRole("combobox", { name: "Appearance" }).selectOption("light");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   expect(errors).toEqual([]);
+});
+
+test("System appearance follows the operating system until an explicit preference is chosen", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await openDemo(page);
+  await expect(page.getByRole("combobox", { name: "Appearance" })).toHaveValue("system");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.getByRole("combobox", { name: "Appearance" }).selectOption("light");
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await page.getByRole("combobox", { name: "Appearance" }).selectOption("system");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.reload();
+  await expect(page.getByRole("combobox", { name: "Appearance" })).toHaveValue("system");
+});
+
+test("a saved appearance is applied even when the console module cannot load", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("intentguard-theme", "light"));
+  await page.route("**/src/console.js", (route) => route.abort());
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("./");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#f6f5f0");
+});
+
+test("the desktop sidebar collapses to named navigation and remembers the setting", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Desktop rail check.");
+  await openDemo(page);
+  const sidebar = page.locator("#workspace-sidebar");
+  await page.getByRole("button", { name: "Collapse sidebar" }).click();
+  await expect(page.getByRole("button", { name: "Expand sidebar" })).toHaveAttribute("aria-expanded", "false");
+  expect((await sidebar.boundingBox()).width).toBe(76);
+  await sidebar.getByRole("link", { name: "Agent policy", exact: true }).click();
+  await expect(page).toHaveURL(/#agent-policy$/);
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Expand sidebar" })).toBeVisible();
+  await page.getByRole("button", { name: "Expand sidebar" }).click();
+  expect((await sidebar.boundingBox()).width).toBeGreaterThan(76);
+});
+
+test("the mobile drawer traps focus and closes by Escape, navigation, and backdrop", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openDemo(page);
+  const toggle = page.getByRole("button", { name: "Open navigation", exact: true });
+  const sidebar = page.locator("#workspace-sidebar");
+  await expect(sidebar).not.toBeVisible();
+  await toggle.click();
+  await expect(sidebar).toHaveAttribute("aria-modal", "true");
+  await expect(page.getByRole("button", { name: "Close navigation", exact: true })).toBeFocused();
+  await sidebar.getByRole("link", { name: "How it works" }).focus();
+  await page.keyboard.press("Tab");
+  await expect(sidebar.getByRole("link", { name: "IntentGuard home" })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(sidebar).not.toBeVisible();
+  await expect(toggle).toBeFocused();
+  await toggle.click();
+  await sidebar.getByRole("link", { name: "Agent policy", exact: true }).click();
+  await expect(sidebar).not.toBeVisible();
+  await expect(page.locator("#agent-policy")).toBeFocused();
+  await toggle.click();
+  await page.locator("#sidebar-backdrop").click({ position: { x: 380, y: 100 } });
+  await expect(sidebar).not.toBeVisible();
+  await expect(toggle).toBeFocused();
 });
 
 test("proof download contains the original complete evidence", async ({ page }) => {
@@ -193,7 +259,7 @@ test("the interface fits phones, tablets, and wide desktops in both themes", asy
   test.skip(testInfo.project.name !== "desktop", "Viewport checks run once.");
   await openDemo(page);
   for (const theme of ["dark", "light"]) {
-    if (theme === "light") await page.getByRole("button", { name: "Switch to light theme" }).click();
+    await page.getByRole("combobox", { name: "Appearance" }).selectOption(theme);
     for (const width of [320, 375, 768, 1024, 1440, 1920]) {
       await page.setViewportSize({ width, height: 1000 });
       const dimensions = await page.evaluate(() => ({
@@ -210,7 +276,8 @@ test("the interface fits phones, tablets, and wide desktops in both themes", asy
 
 test("desktop and mobile visual review artifacts", async ({ page }, testInfo) => {
   await openDemo(page);
+  await page.getByRole("combobox", { name: "Appearance" }).selectOption("dark");
   await page.screenshot({ path: testInfo.outputPath("console-dark.png"), fullPage: true });
-  await page.getByRole("button", { name: "Switch to light theme" }).click();
+  await page.getByRole("combobox", { name: "Appearance" }).selectOption("light");
   await page.screenshot({ path: testInfo.outputPath("console-light.png"), fullPage: true });
 });

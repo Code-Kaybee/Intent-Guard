@@ -93,7 +93,7 @@ const server = createServer(async (request, response) => {
     let resource;
     if (pathname === "/" || pathname === "/index.html") resource = new URL("../index.html", import.meta.url);
     else if (pathname === "/styles.css") resource = new URL("../styles.css", import.meta.url);
-    else if (/^\/assets\/[a-z0-9/-]+\.(svg|woff2|txt)$/.test(pathname)) resource = new URL(`..${pathname}`, import.meta.url);
+    else if (/^\/assets\/[a-z0-9/-]+\.(css|svg|woff2|txt)$/.test(pathname)) resource = new URL(`..${pathname}`, import.meta.url);
     else if (/^\/src\/[a-z0-9-]+\.js$/.test(pathname)) resource = new URL(`..${pathname}`, import.meta.url);
     else return json(response, 404, { error: "Not found." });
     const contents = await readFile(resource);

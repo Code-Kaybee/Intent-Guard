@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#101411">
+    <meta name="theme-color" content="#000000">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
     <meta name="description" content="Give AI payment agents a boundary. Explore exact invoice approvals, blocked attacks, and verified NEAR transaction evidence with IntentGuard.">
     <meta property="og:title" content="IntentGuard — Compromised agent. Protected money.">
@@ -12,6 +12,7 @@
     <title>IntentGuard — Money With Boundaries</title>
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
     <script src="./src/theme.js"></script>
+    <link rel="stylesheet" href="./assets/fonts.css">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
@@ -33,19 +34,24 @@
       <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 3h7v7m0-7L10 14m0-10H3v17h17v-7"/></symbol>
       <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14a9 9 0 0 1-10.5-10.5A9 9 0 1 0 20.5 14Z"/></symbol>
       <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+      <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4"/></symbol>
+      <symbol id="i-sidebar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></symbol>
     </svg>
     <a class="skip-link" href="#attack-console">Skip to attack console</a>
     <div class="app-shell">
-      <aside class="sidebar" aria-label="Workspace navigation">
+      <aside class="sidebar" id="workspace-sidebar" aria-label="Workspace navigation">
+        <div class="sidebar-header">
         <a class="brand" href="#top" aria-label="IntentGuard home">
           <span class="brand-mark"><svg class="icon"><use href="#i-shield"/></svg></span>
-          <span>intent<span class="brand-light">guard</span><small>PAYMENT SECURITY</small></span>
+          <span class="brand-copy">intent<span class="brand-light">guard</span><small>PAYMENT SECURITY</small></span>
         </a>
+        <button class="icon-button drawer-close" id="sidebar-close" type="button" aria-label="Close navigation"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+        </div>
         <div class="workspace-label">YOUR WORKSPACE</div>
         <nav class="workspace-nav" aria-label="Main">
-          <a class="nav-item active" href="#attack-console" aria-current="location"><svg class="icon"><use href="#i-grid"/></svg><span>Attack console</span><span class="nav-counter">01</span></a>
-          <a class="nav-item" href="#agent-policy" id="policy-nav"><svg class="icon"><use href="#i-key"/></svg><span>Agent policy</span></a>
-          <a class="nav-item" href="#attack-results"><svg class="icon"><use href="#i-activity"/></svg><span>Results &amp; receipts</span></a>
+          <a class="nav-item active" href="#attack-console" aria-label="Attack console" title="Attack console" aria-current="location"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg><span class="nav-label">Attack console</span><span class="nav-counter">01</span></a>
+          <a class="nav-item" href="#agent-policy" id="policy-nav" aria-label="Agent policy" title="Agent policy"><svg class="icon" aria-hidden="true"><use href="#i-key"/></svg><span class="nav-label">Agent policy</span></a>
+          <a class="nav-item" href="#attack-results" aria-label="Results and receipts" title="Results and receipts"><svg class="icon" aria-hidden="true"><use href="#i-activity"/></svg><span class="nav-label">Results &amp; receipts</span></a>
         </nav>
         <div class="sidebar-note">
           <span class="sidebar-note-icon"><svg class="icon"><use href="#i-shield"/></svg></span>
@@ -57,22 +63,21 @@
           <div class="sidebar-status" id="sidebar-status"><span class="status-dot"></span><span id="chain-status-label">CONNECTING TO NEAR</span></div>
           <div class="agent-card">
             <div class="agent-avatar"><svg class="icon"><use href="#i-key"/></svg></div>
-            <div><strong>Payment agent</strong><small id="agent-key-caption">Checking permissions…</small></div>
+            <div class="agent-copy"><strong>Payment agent</strong><small id="agent-key-caption">Checking permissions…</small></div>
             <span class="agent-indicator" aria-hidden="true"></span>
           </div>
           <p class="sidebar-footnote" id="sidebar-footnote">NEAR Sandbox · isolated test funds</p>
         </div>
       </aside>
+      <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Close navigation backdrop" tabindex="-1" hidden></button>
 
       <main class="main" id="top">
         <header class="topbar">
-          <div class="breadcrumb">Workspace <span>/</span> <strong>Attack console</strong></div>
+          <div class="topbar-left"><button class="icon-button sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Collapse sidebar" aria-controls="workspace-sidebar" aria-expanded="true"><svg class="icon" aria-hidden="true"><use href="#i-sidebar"/></svg></button><div class="breadcrumb">Workspace <span>/</span> <strong>Attack console</strong></div></div>
           <div class="topbar-right">
             <span class="network-pill"><span class="network-dot"></span> NEAR <span class="network-detail">SANDBOX</span></span>
             <span class="runtime-pill" id="runtime-pill">CONNECTING</span>
-            <button class="theme-toggle icon-button" id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch theme">
-              <svg class="icon" aria-hidden="true"><use id="theme-icon" href="#i-sun"/></svg>
-            </button>
+            <label class="theme-control"><svg class="icon" aria-hidden="true"><use id="theme-icon" href="#i-monitor"/></svg><span class="sr-only">Appearance</span><select id="theme-select" aria-label="Appearance"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
             <a class="source-link icon-button" href="https://github.com/Code-Kaybee/Intent-Guard" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source">
               <svg class="icon" aria-hidden="true"><use href="#i-external"/></svg>
             </a>
@@ -81,7 +86,7 @@
 
         <section class="page-heading" aria-labelledby="page-title">
           <div class="hero-copy">
-            <div class="eyebrow"><span class="eyebrow-line"></span> BUILT FOR THE MOMENT TRUST BREAKS</div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> INTENTGUARD · AI PAYMENT SECURITY</div>
             <h1 id="page-title">Compromised agent.<br><span>Protected money.</span></h1>
             <p>Let your agent make the request.<br class="desktop-break"> Let NEAR enforce the boundary.</p>
             <div class="hero-actions">

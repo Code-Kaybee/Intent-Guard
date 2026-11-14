@@ -10,7 +10,7 @@ Built for the **NEAR Hackathon — AI Security & Defense** track.
 
 The public interface replays **22 verified cases captured from a real NEAR Sandbox**: 19 blocked attacks, the unrestricted control, an approved invoice payment, and failed-transfer recovery. Search cases, compare the three-step demo, inspect original receipts and balance checks, and download the complete evidence. The page clearly labels recorded results; exploring a case sends no new transaction.
 
-The interface supports phones, tablets, and desktops, dark and light themes, keyboard navigation, and explicit loading and retry states. [Web build and GitHub Pages deployment](docs/WEB.md).
+The interface supports phones, tablets, and desktops, Light/Dark/System appearance settings, a collapsible desktop sidebar, accessible mobile navigation, and explicit loading and retry states. [Web build and GitHub Pages deployment](docs/WEB.md).
 
 ## Try the complete moment
 
@@ -110,5 +110,7 @@ docs/           Build decision, testnet workflow and submission materials
 The original browser simulation and visual design were created for this hackathon. The enforcement boundary was rebuilt during the November 2026 event: a NEAR contract, scoped-key executor, adversarial suite and live chain console replace the simulated gate.
 
 Libraries: near-sdk 5.17.2, near-api-js 5.1.0, near-workspaces 5.0.0 and Binaryen 132.0.0. The build pins compatible system bindings and normalizes compiler output to NEAR's WASM baseline; use `npm run build:contract` rather than deploying raw compiler output.
+
+Typography: self-hosted DM Sans and Space Grotesk, distributed under the SIL Open Font License (licenses in `assets/fonts/`). The interface refresh used the open-source [Taste design skill](https://github.com/Leonxlnx/taste-skill) as design guidance.
 
 Track: **AI Security & Defense (`security`)**. [Current hackathon rules](https://nearhackathon.com/HACKATHON.md). [Build decision and timebox](docs/BUILD_PLAN.md). [Demo and submission checklist](docs/SUBMISSION.md).

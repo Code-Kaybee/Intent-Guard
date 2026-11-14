@@ -22,6 +22,8 @@ npm run test:web
 
 The browser checks cover desktop and phone interactions, search and case filters, theme persistence with restricted storage, original receipt downloads, evidence loading failures, live startup recovery, and reconciliation after a lost payment response. Layout checks cover widths from 320 to 1920 pixels in both themes. A local Google Chrome installation can be used automatically; `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` can select another installed Chromium.
 
+Appearance offers Light, Dark, and System. System follows operating-system changes; explicit selections persist and apply before first paint. Desktop navigation can collapse to a named icon rail. On phones and tablets, the navigation button opens a dismissible drawer with keyboard focus support. Fonts are self-hosted with the static assets.
+
 ## Refresh the captured evidence
 
 ```sh

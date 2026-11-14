@@ -19,7 +19,8 @@
     "build:web": "node scripts/build-web.mjs",
     "export:evidence": "node scripts/export-evidence.mjs",
     "preview": "node server/preview.mjs",
-    "test:web": "playwright test"
+    "test:web": "playwright test",
+    "record:demo": "node scripts/record-demo.mjs"
   },
   "dependencies": {
     "near-api-js": "5.1.0",
