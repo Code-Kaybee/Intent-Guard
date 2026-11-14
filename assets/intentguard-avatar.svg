@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">IntentGuard</title>
+  <desc id="desc">A yellow shield and checkmark on black, using IntentGuard's payment security mark.</desc>
+  <rect width="512" height="512" fill="#000000"/>
+  <g transform="translate(-32 -32) scale(12)">
+    <path d="m24 8 14 5v10c0 8-14 17-14 17S10 31 10 23V13Z" fill="#f3ca20" fill-opacity=".12" stroke="#f3ca20" stroke-width="2" stroke-linejoin="round"/>
+    <path d="m17 23 5 5 10-11" fill="none" stroke="#f3ca20" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

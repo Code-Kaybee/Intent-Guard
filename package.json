@@ -20,7 +20,10 @@
     "export:evidence": "node scripts/export-evidence.mjs",
     "preview": "node server/preview.mjs",
     "test:web": "playwright test",
-    "record:demo": "node scripts/record-demo.mjs"
+    "record:demo": "node scripts/record-demo.mjs",
+    "narrate:demo": "node scripts/generate-demo-narration.mjs",
+    "record:guided-demo": "node scripts/record-guided-demo.mjs",
+    "cut:judge-demo": "node scripts/cut-judge-demo.mjs"
   },
   "dependencies": {
     "near-api-js": "5.1.0",

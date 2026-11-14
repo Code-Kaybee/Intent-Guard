@@ -1,0 +1,61 @@
+{
+  "title": "IntentGuard — A compromised agent. A payment boundary that holds.",
+  "evidence": "Recorded NEAR Sandbox transactions; deterministic adversarial cases. The public console sends no new transactions.",
+  "scenes": [
+    {
+      "id": "hook",
+      "title": "What if your agent pays the wrong person?",
+      "narration": "What happens when an AI agent pays the wrong person? Intent Guard puts the payment boundary on NEAR."
+    },
+    {
+      "id": "start",
+      "title": "Start with Replay attack demo",
+      "narration": "Click Replay attack demo to begin. This public console replays real NEAR Sandbox receipts. It sends no new transaction."
+    },
+    {
+      "id": "control",
+      "title": "01 · The unrestricted wallet pays the attacker",
+      "narration": "Select Unprotected wallet. With full access, the malicious request pays the attacker zero point zero eight NEAR."
+    },
+    {
+      "id": "redirect",
+      "title": "02 · IntentGuard blocks the redirected payment",
+      "narration": "Now select Redirected request. Intent Guard rejects the changed recipient because the owner approved a different vendor. The attacker gets zero."
+    },
+    {
+      "id": "approved",
+      "title": "03 · The approved vendor gets paid",
+      "narration": "Select Approved invoice. The original vendor receives exactly zero point zero eight NEAR. That invoice can only be paid once."
+    },
+    {
+      "id": "protocol",
+      "title": "Try Protocol → Skip the firewall",
+      "narration": "To inspect a bypass, choose Protocol, then Skip the firewall. Click Inspect selected receipt. NEAR rejects the raw transfer before inclusion."
+    },
+    {
+      "id": "policy",
+      "title": "Inspect the key, limits, and rejection",
+      "narration": "Open Agent policy in the sidebar. Here are the restricted key, payment limit, and daily budget. Expand receipt logs to inspect the rejection."
+    },
+    {
+      "id": "search",
+      "title": "Search a case. Inspect its original receipt.",
+      "narration": "Back in Attack console, search for replay. Select the case and inspect its receipt. A paid invoice cannot release funds again."
+    },
+    {
+      "id": "suite",
+      "title": "Explore all 22 verified cases",
+      "narration": "Choose Explore all twenty two cases. Results and receipts lets you revisit every outcome, with original timestamps and transaction evidence."
+    },
+    {
+      "id": "download",
+      "title": "Download the complete evidence bundle",
+      "narration": "Click Download proof for the complete evidence bundle. Nineteen adversarial cases were blocked, alongside the control, approved payment, and failed transfer recovery."
+    },
+    {
+      "id": "close",
+      "title": "The owner approves. NEAR enforces.",
+      "narration": "The agent makes the request. NEAR enforces the owner's approval. Intent Guard. Built at NEAR Hackathon. Try the demo and inspect the proof."
+    }
+  ]
+}

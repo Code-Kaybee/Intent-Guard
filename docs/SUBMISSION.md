@@ -45,6 +45,34 @@ The recording is captioned and silent. Preview it before uploading; add a spoken
 
 Upload the MP4 through your X account, use the post text above, and retain the public post URL. A website URL alone is not the required demo-post URL.
 
+## Narrated judge walkthrough
+
+The guided version adds a synthetic English narrator, sentence-timed captions, and a visible cursor. It demonstrates the actual interface: the three-case comparison, Protocol filter, raw-transfer refusal, Agent policy, receipt logs, replay search, complete results, and proof download. The downloaded proof is checked for all 22 verified cases before encoding. The narration and sequence are in [demo-storyboard.json](demo-storyboard.json).
+
+Speech is generated locally with [Kokoro](https://github.com/hexgrad/kokoro/tree/main/kokoro.js), using the `af_heart` voice and Apache-licensed model weights. This optional tooling does not add voice services or dependencies to the application. The first generation downloads the model.
+
+Install the optional media dependency separately, skipping GPU binaries on CPU-only machines:
+
+```sh
+npm install --prefix /tmp/intentguard-media --onnxruntime-node-install-cuda=skip kokoro-js
+npm run narrate:demo -- --module /tmp/intentguard-media/node_modules/kokoro-js/dist/kokoro.js
+npm run build:web
+npm run record:guided-demo -- --ffmpeg /path/to/ffmpeg
+npm run cut:judge-demo -- --ffmpeg /path/to/ffmpeg
+```
+
+Outputs are under the ignored `artifacts/submission/guided/` directory:
+
+- `intentguard-guided-demo.mp4`: H.264 video with AAC narration and visible captions, ready for an X upload.
+- `intentguard-judges-demo.mp4`: a shorter narrated cut focused on the payment comparison and downloadable proof; use this for the hackathon post.
+- `intentguard-judges.srt` and `judges-transcript.txt`: subtitles and narration for the shorter cut.
+- `intentguard-guided.srt`: separate subtitles with the same narration timing.
+- `intentguard-narration.mp3` and `narration.txt`: voice track and transcript.
+- `intentguard-guided-cover.png` and `frames/`: cover and one review image per scene.
+- `recording-timeline.json`: measured scene timing and voice metadata.
+
+The source label remains visible throughout: recorded NEAR Sandbox evidence, with AI narration. No private credentials or new chain transactions are used. The original silent video is retained separately.
+
 ## Repository About description
 
 ```text
